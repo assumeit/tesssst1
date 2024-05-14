@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html> <head>
+      <style>
+        table {
+          text-align:center;
+          margin-left: auto;
+          margin-right: auto;
+          font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                       'Lucida Grande', 'Lucida Sans Unicode',
+                        Geneva, Verdana, sans-serif;
+        }
+        input, button {
+          padding: 12px 20px;           margin: 8px 0;
+          display: inline-block;        border: 1px solid #ccc;
+          border-radius: 4px;           box-sizing: border-box;
+          font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                       'Lucida Grande', 'Lucida Sans Unicode',
+                        Geneva, Verdana, sans-serif;
+          text-align: center;
+         }
+      </style>
+   </head>
+   <body>
+      <div align="center">
+      <h1>Asmit's Grade Calculator</h1>  
+       
+      <button onclick="addActivity()" id="addActivity">
+        Add new Activity</button>
+
+      <label for="activity">Activity:</label>
+      <input type="text" id="activity" size="3">
+       
+      <label for="Weight">Weight</label>
+      <input type="text" id="Weight" size="3"><br>    
+
+      <button onclick="addGrade()" id="addGrade">
+        Add new Grade</button>
+
+      <label for="grade">Grade:</label>
+      <input type="text" id="grade" size="3"">
+
+      <label for="activityNo">Activity no</label>
+      <input type="text" id="activityNo" size="3"><br>        
+   
+      <button onclick="deleteActivity()" id="deleteActivity">
+      Delete Activity </button>    
+
+      <table border="5" id="asmitsTable" style="width:70%">
+          <tr>
+              <th>No</th>
+              <th>Activity</th> <th>Weight</th>
+              <th>Grade</th> </tr>  
+          <tr>
+              <td>1</td> <td>Lab1</td>
+              <td>10</td> <td></td>
+          </tr>
+          <tr>
+              <td>2</td> <td>Lab2</td>
+              <td>20</td> <td></td>
+          </tr>
+          <tr>
+              <td>3</td> <td>Test1</td>
+              <td>30</td> <td></td>
+          </tr>
+          <tr>
+              <td>4</td> <td>Test2</td>
+              <td>40</td> <td></td>
+          </tr>
+      </table>
+     <p id="ERR" style="color:red;">Error Message: </p>
+<script>
+  noActivity = 4;
+  totalWeight = 100;
+  ERR = document.getElementById("ERR");
+ 
+  noActivity = 4;
+totalWeight = 100;
+ERR = document.getElementById("ERR");
+
+function addActivity() {
+    var activityInput = document.getElementById("activity");
+    var weightInput = document.getElementById("Weight");
+    
+   
+    if (activityInput.value === "" ) {
+        ERR.innerHTML = "Please fill the activity name.";
+        return; 
+    }
+    if (weightInput.value === "" ) {
+        ERR.innerHTML = "Please fill the weight";
+        return; 
+    }
+   
+    var weight = parseFloat(weightInput.value);
+    if (isNaN(weight)) {
+        ERR.innerHTML = "Please enter a valid weight i.e a number.";
+        return; 
+    }
+
+    
+    if (weight < 0) {
+        ERR.innerHTML = "Weight cant be -ve";
+        return; 
+    }
+    if (weight >100) {
+        ERR.innerHTML = "Weight must be under 100";
+        return; 
+    }
+
+    
+    ERR.innerHTML = "";
+
+    var actin = activityInput.value;
+
+    noActivity++;
+    var table = document.getElementById("asmitsTable");
+
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    cell1.innerHTML = noActivity;
+    cell2.innerHTML = actin;
+    cell3.innerHTML = weight;
+    cell4.innerHTML = "";
+}
+
+
+  function deleteActivity() {
+        var table = document.getElementById("asmitsTable");
+        if (table.rows.length >= 2) {
+        table.deleteRow(-1);
+        document.getElementById("ERR").innerHTML = ""; 
+         } else {
+    document.getElementById("ERR").innerHTML = "error:nothing to delete"; 
+    return;
+  }
+      }
+ 
+  function addGrade() {
+    var gradeInput = document.getElementById("grade");
+    var activityNoInput = document.getElementById("activityNo");
+    var table = document.getElementById("asmitsTable");
+
+    if (gradeInput.value === "" ) {
+        ERR.innerHTML = "Error Message: fill the grade";
+        return;
+    }
+    if (isNaN(gradeInput.value)) {
+        ERR.innerHTML = "Error Message:grade must be a number";
+        return;
+    }
+    var grade = parseFloat(gradeInput.value);
+    if (grade < 0 ) {
+        ERR.innerHTML = "grade must be more than 0";
+        return;
+    }
+    if (grade > 100) {
+        ERR.innerHTML = "grade must be less than 100";
+        return;
+    }
+    var activityNo = parseInt(activityNoInput.value);
+    if (activityNo <= 0 ) {
+        ERR.innerHTML = "activity number rejected";
+        return;
+    }
+    if (activityNo > noActivity) {
+        ERR.innerHTML = "Error Message:pick the avialable numbers only";
+        return;
+    }
+  
+    ERR.innerHTML = "";
+
+    var row = table.rows[activityNo];
+    if (row) {
+        var cell = row.cells[3];
+        cell.innerHTML = grade;
+        gradeInput.value = "";
+        activityNoInput.value = "";
+    } else {
+        ERR.innerHTML = "Error Message: Activity No is rejected";
+    }   
+  } 
+</script>
+  </body> </html>
